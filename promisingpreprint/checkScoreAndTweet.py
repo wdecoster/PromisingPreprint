@@ -64,6 +64,7 @@ def cleandb(currentlist, alreadyTweeted, dbf):
                 else:
                     db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, "SeenNotTweeted"))
 
+
 def readdb(dbf):
     '''
     Get all saved metrics from the database saved to file
@@ -82,9 +83,13 @@ def getArgs():
 
 
 def setupTweeting():
+    '''
+    Setup the tweeting api using the keys and secrets imported from secrets.py
+    '''
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
     return tweepy.API(auth)
+
 
 def main():
     try:
