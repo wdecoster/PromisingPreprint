@@ -94,7 +94,7 @@ def setupTweeting():
 def main():
     try:
         args = getArgs()
-	db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
+        db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         logging.basicConfig(
                 format='%(asctime)s %(message)s',
                 filename="/home/pi/projects/PromisingPreprint/checkScoreAndTweet.log",

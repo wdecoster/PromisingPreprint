@@ -44,7 +44,7 @@ def readdb(dbf):
 
 def main():
     try:
-	db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
+        db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         logging.basicConfig(
                 format='%(asctime)s %(message)s',
                 filename="/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log",
