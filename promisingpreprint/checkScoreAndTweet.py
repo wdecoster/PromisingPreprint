@@ -35,7 +35,7 @@ def queryAltmetric(doi):
             logging.error("The API version you are using is currently down for maintenance.")
         elif e.status_code == 404:
             logging.error("Invalid API function")
-            print e.msg
+            print(e.msg)
 
 
 def tweet(message, api, dry):
