@@ -94,13 +94,14 @@ def setupTweeting():
 def main():
     try:
         args = getArgs()
+	db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         logging.basicConfig(
                 format='%(asctime)s %(message)s',
                 filename="checkScoreAndTweet.log",
                 level=logging.INFO)
         logging.info('Started.')
         api = setupTweeting()
-        currentlist = readdb("preprintdatabase.txt")
+        currentlist = readdb(db)
         tweeted = []
         for doi, link, title, date, status in currentlist:
             if status == 'tweeted':
@@ -111,7 +112,7 @@ def main():
             if pct >= 90:
                 tweet("{}\n{}".format(link, title), api, args.dry)
                 tweeted.append(doi)
-        cleandb(currentlist, tweeted, "preprintdatabase.txt")
+        cleandb(currentlist, tweeted, db)
         logging.info('Finished.\n')
     except Exception as e:
         logging.error(e, exc_info=True)
