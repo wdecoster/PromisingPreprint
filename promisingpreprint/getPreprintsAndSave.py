@@ -47,7 +47,7 @@ def main():
 	db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         logging.basicConfig(
                 format='%(asctime)s %(message)s',
-                filename="getPreprintsAndSave.log",
+                filename="/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log",
                 level=logging.INFO)
         logging.info('Started.')
         dois_seen = readdb(db)
