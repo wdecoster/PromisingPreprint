@@ -42,7 +42,7 @@ def tweet(message, api, dry):
     '''
     Tweet the message to the api, except if dry = True, then just print
     '''
-    if args.dry:
+    if dry:
         print(message)
     else:
         api.update_status(message)
