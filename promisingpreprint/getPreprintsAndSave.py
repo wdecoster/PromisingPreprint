@@ -18,6 +18,7 @@ def checkRSS(dois_seen, dbf):
     else:
         for pub in feed["items"]:
             if not pub['dc_identifier'] in dois_seen:
+                logging.info("Adding article {} to database".format(pub['dc_identifier']))
                 save2db(pub['dc_identifier'], pub["link"], pub["title"], pub['updated'], dbf)
 
 
