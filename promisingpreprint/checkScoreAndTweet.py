@@ -104,13 +104,14 @@ def setupLogging():
     handler.setFormatter(logging.Formatter("{asctime} {levelname:8s} {message}", style='{'))
     my_logger.addHandler(handler)
     my_logger.info('Started.')
+    return my_logger
 
 def main():
     try:
         args = getArgs()
+        my_logger = setupLogging()
         if args.dry:
             my_logger.info("Running in dry mode.")
-        setupLogging()
         db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         api = setupTweeting()
         currentlist = readdb(db)
