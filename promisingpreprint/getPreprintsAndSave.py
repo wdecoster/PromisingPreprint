@@ -7,7 +7,7 @@ from os import path
 import logging
 
 
-def checkRSS(dois_seen):
+def checkRSS(dois_seen, dbf):
     '''
     Check the RSS feed of biorxiv and for each paper, save doi, link and title
     Except if the doi was already seen, then don't duplicate
@@ -18,15 +18,16 @@ def checkRSS(dois_seen):
     else:
         for pub in feed["items"]:
             if not pub['dc_identifier'] in dois_seen:
-                save2db(pub['dc_identifier'], pub["link"], pub["title"], pub['updated'])
+                logging.info("Adding article {} to database".format(pub['dc_identifier']))
+                save2db(pub['dc_identifier'], pub["link"], pub["title"], pub['updated'], dbf)
 
 
-def save2db(doi, link, title, date):
+def save2db(doi, link, title, date, dbf):
     '''
     Save article metrics to the database
     Add status 'notTweeted', since this publication is new
     '''
-    with open("preprintdatabase.txt", 'a') as db:
+    with open(dbf, 'a') as db:
         db.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, 'notTweeted'))
 
 
@@ -44,13 +45,14 @@ def readdb(dbf):
 
 def main():
     try:
+        db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         logging.basicConfig(
                 format='%(asctime)s %(message)s',
-                filename="getPreprintsAndSave.log",
+                filename="/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log",
                 level=logging.INFO)
         logging.info('Started.')
-        dois_seen = readdb("preprintdatabase.txt")
-        checkRSS(dois_seen)
+        dois_seen = readdb(db)
+        checkRSS(dois_seen, db)
         logging.info('Finished.\n')
     except Exception as e:
         logging.error(e, exc_info=True)
