@@ -101,7 +101,7 @@ def setupLogging():
     my_logger = logging.getLogger('MyLogger')
     my_logger.setLevel(logging.INFO)
     handler = logging.handlers.RotatingFileHandler(logname, maxBytes=10000, backupCount=5)
-    handler.setFormatter(logging.Formatter("{asctime}{levelname:8s}{message}"))
+    handler.setFormatter(logging.Formatter("{asctime} {levelname:8s} {message}", style='{'))
     my_logger.addHandler(handler)
     my_logger.info('Started.')
 
