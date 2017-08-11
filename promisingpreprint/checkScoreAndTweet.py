@@ -10,6 +10,7 @@ from datetime import datetime
 from secrets import *
 import tweepy
 import logging
+import logging.handlers
 import argparse
 
 
@@ -91,15 +92,20 @@ def setupTweeting():
     return tweepy.API(auth)
 
 
+def setupLogging():
+    logname = "/home/pi/projects/PromisingPreprint/checkScoreAndTweet.log"
+    my_logger = logging.getLogger('MyLogger')
+    my_logger.setLevel(logging.INFO)
+    handler = logging.handlers.RotatingFileHandler(logname, maxBytes=10000, backupCount=5)
+    handler.setFormatter(logging.Formatter("{asctime}{levelname:8s}{message}"))
+    my_logger.addHandler(handler)
+    my_logger.info('Started.')
+
 def main():
     try:
         args = getArgs()
         db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
-        logging.basicConfig(
-                format='%(asctime)s %(message)s',
-                filename="/home/pi/projects/PromisingPreprint/checkScoreAndTweet.log",
-                level=logging.INFO)
-        logging.info('Started.')
+        setupLogging()
         api = setupTweeting()
         currentlist = readdb(db)
         tweeted = []
