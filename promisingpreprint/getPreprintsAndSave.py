@@ -14,11 +14,11 @@ def checkRSS(dois_seen, dbf):
     '''
     feed = feedparser.parse("http://connect.biorxiv.org/biorxiv_xml.php?subject=all")
     if 'bozo_exception' in feed.keys():
-        logging.error("Failed to reach the feed")
+        my_logger.error("Failed to reach the feed")
     else:
         for pub in feed["items"]:
             if not pub['dc_identifier'] in dois_seen:
-                logging.info("Adding article {} to database".format(pub['dc_identifier']))
+                my_logger.info("Adding article {} to database".format(pub['dc_identifier']))
                 save2db(pub['dc_identifier'], pub["link"], pub["title"], pub['updated'], dbf)
 
 
@@ -39,23 +39,33 @@ def readdb(dbf):
         with open(dbf, 'r') as db:
             return [i.split('\t')[0] for i in db]
     else:
-        logging.warning("Unexpected: Database not found")
+        my_logger.warning("Unexpected: Database not found")
         return []
+
+def setupLogging():
+    '''
+    Setup a rotating log in which each file can maximally get 10kb
+    5 backups are kept in addition to the current file
+    '''
+    logname = "/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log"
+    my_logger = logging.getLogger('MyLogger')
+    my_logger.setLevel(logging.INFO)
+    handler = logging.handlers.RotatingFileHandler(logname, maxBytes=10000, backupCount=5)
+    handler.setFormatter(logging.Formatter("{asctime} {levelname:8s} {message}", style='{'))
+    my_logger.addHandler(handler)
+    my_logger.info('Started.')
+    return my_logger
 
 
 def main():
     try:
         db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
-        logging.basicConfig(
-                format='%(asctime)s %(message)s',
-                filename="/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log",
-                level=logging.INFO)
-        logging.info('Started.')
+        setupLogging()
         dois_seen = readdb(db)
         checkRSS(dois_seen, db)
-        logging.info('Finished.\n')
+        my_logger.info('Finished.\n')
     except Exception as e:
-        logging.error(e, exc_info=True)
+        my_logger.error(e, exc_info=True)
         raise
 
 
