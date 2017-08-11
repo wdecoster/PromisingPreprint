@@ -4,3 +4,5 @@ promisingpreprint/secrets.py
 promisingpreprint/__pycache__/
 preprintdatabase.txt
 cron.log
+checkScoreAndTweet.log.1
+getPreprintsAndSave.log.1
