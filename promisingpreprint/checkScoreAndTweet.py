@@ -108,8 +108,10 @@ def setupLogging():
 def main():
     try:
         args = getArgs()
-        db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
+        if args.dry:
+            my_logger.info("Running in dry mode.")
         setupLogging()
+        db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         api = setupTweeting()
         currentlist = readdb(db)
         tweeted = []
@@ -123,9 +125,9 @@ def main():
                 tweet("{}\n{}".format(title, link), api, args.dry)
                 tweeted.append(doi)
         cleandb(currentlist, tweeted, db)
-        logging.info('Finished.\n')
+        my_logger.info('Finished.\n')
     except Exception as e:
-        logging.error(e, exc_info=True)
+        my_logger.error(e, exc_info=True)
         raise
 
 
