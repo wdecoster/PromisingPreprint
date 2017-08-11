@@ -93,6 +93,10 @@ def setupTweeting():
 
 
 def setupLogging():
+    '''
+    Setup a rotating log in which each file can maximally get 10kb
+    5 backups are kept in addition to the current file
+    '''
     logname = "/home/pi/projects/PromisingPreprint/checkScoreAndTweet.log"
     my_logger = logging.getLogger('MyLogger')
     my_logger.setLevel(logging.INFO)
@@ -116,7 +120,7 @@ def main():
             pct = queryAltmetric(doi)
             assert 0 <= pct <= 100
             if pct >= 90:
-                tweet("{}\n{}".format(link, title), api, args.dry)
+                tweet("{}\n{}".format(title, link), api, args.dry)
                 tweeted.append(doi)
         cleandb(currentlist, tweeted, db)
         logging.info('Finished.\n')
