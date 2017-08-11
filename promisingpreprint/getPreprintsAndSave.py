@@ -5,6 +5,7 @@
 import feedparser
 from os import path
 import logging
+import logging.handlers
 
 
 def checkRSS(dois_seen, dbf):
@@ -60,7 +61,6 @@ def setupLogging():
 def main():
     try:
         db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
-        setupLogging()
         dois_seen = readdb(db)
         checkRSS(dois_seen, db)
         my_logger.info('Finished.\n')
@@ -70,4 +70,5 @@ def main():
 
 
 if __name__ == '__main__':
+    my_logger = setupLogging()
     main()
