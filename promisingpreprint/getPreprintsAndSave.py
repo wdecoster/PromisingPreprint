@@ -20,7 +20,13 @@ def checkRSS(dois_seen, dbf):
         for pub in feed["items"]:
             if not pub['dc_identifier'] in dois_seen:
                 my_logger.info("Adding article {} to database".format(pub['dc_identifier']))
-                save2db(pub['dc_identifier'], pub["link"], pub["title"], pub['updated'], dbf)
+                save2db(pub['dc_identifier'], trimlink(pub["link"]), pub["title"], pub['updated'], dbf)
+
+def trimlink(url):
+    '''
+    Remove unnessecary parts from the url
+    '''
+    return url.split('?')[0]
 
 
 def save2db(doi, link, title, date, dbf):
