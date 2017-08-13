@@ -111,8 +111,8 @@ def shorten(s):
     '''
     Shorten the title if necessary
     '''
-    if len(s) > 90:
-        return s[:90] + "..."
+    if len(s) > 110:
+        return s[:110] + "..."
     else:
         return s
 
@@ -135,7 +135,7 @@ def main():
             assert 0 <= pct <= 100
             if pct >= 90:
                 tit = shorten(title)
-                tweet("{}\n{}".format(title, link), api, args.dry)
+                tweet("{}\n{}".format(tit, link), api, args.dry)
                 tweeted.append(doi)
         cleandb(currentlist, tweeted, db)
         my_logger.info('Finished.\n')
