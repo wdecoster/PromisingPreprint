@@ -111,8 +111,8 @@ def shorten(s):
     '''
     Shorten the title if necessary
     '''
-    if len(s) > 110:
-        return s[:110] + "..."
+    if len(s) > 90:
+        return s[:90] + "..."
     else:
         return s
 
