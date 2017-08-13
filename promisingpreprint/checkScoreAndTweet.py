@@ -106,6 +106,17 @@ def setupLogging():
     my_logger.info('Started.')
     return my_logger
 
+
+def shorten(s):
+    '''
+    Shorten the title if necessary
+    '''
+    if len(s) > 110:
+        return s[:110] + "..."
+    else:
+        return s
+
+
 def main():
     try:
         args = getArgs()
@@ -123,6 +134,7 @@ def main():
             pct = queryAltmetric(doi)
             assert 0 <= pct <= 100
             if pct >= 90:
+                tit = shorten(title)
                 tweet("{}\n{}".format(title, link), api, args.dry)
                 tweeted.append(doi)
         cleandb(currentlist, tweeted, db)
