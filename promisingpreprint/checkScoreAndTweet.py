@@ -7,7 +7,7 @@ from altmetric import Altmetric
 from os import path
 from time import sleep
 from datetime import datetime
-from secrets import *
+import secrets
 import tweepy
 import logging
 import logging.handlers
@@ -28,14 +28,14 @@ def queryAltmetric(doi):
             return 0
     except AltmetricHTTPException as e:
         if e.status_code == 403:
-            logging.error("You aren't authorized for this call: {}".format(doi))
+            my_logger.error("You aren't authorized for this call: {}".format(doi))
         elif e.status_code == 420:
-            logging.error("You are being rate limited, currently {}".format(doi))
+            my_logger.error("You are being rate limited, currently {}".format(doi))
             sleep(60)
         elif e.status_code == 502:
-            logging.error("The API version you are using is currently down for maintenance.")
+            my_logger.error("The API version you are using is currently down for maintenance.")
         elif e.status_code == 404:
-            logging.error("Invalid API function")
+            my_logger.error("Invalid API function")
             print(e.msg)
 
 
@@ -43,11 +43,11 @@ def tweet(message, api, dry):
     '''
     Tweet the message to the api, except if dry = True, then just print
     '''
-    if dry:
-        print(message)
-    else:
+    if not dry:
         api.update_status(message)
         sleep(2)
+    else:
+        print(message)
 
 
 def cleandb(currentlist, alreadyTweeted, dbf):
@@ -58,7 +58,7 @@ def cleandb(currentlist, alreadyTweeted, dbf):
     '''
     currentTime = datetime.now()
     with open(dbf, 'w') as db_updated:
-        for doi, link, title, date, status in currentlist:
+        for doi, link, title, date, __ in currentlist:
             if (currentTime - datetime.strptime(date.strip(), "%Y-%m-%d")).days <= 7:
                 if doi in alreadyTweeted:
                     db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, "tweeted"))
@@ -87,8 +87,8 @@ def setupTweeting():
     '''
     Setup the tweeting api using the keys and secrets imported from secrets.py
     '''
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_secret)
+    auth = tweepy.OAuthHandler(secrets.consumer_key, secrets.consumer_secret)
+    auth.set_access_token(secrets.access_token, secrets.access_secret)
     return tweepy.API(auth)
 
 
@@ -111,31 +111,29 @@ def shorten(s):
     '''
     Shorten the title if necessary
     '''
-    if len(s) > 110:
-        return s[:110] + "..."
-    else:
+    if len(s) < 110:
         return s
+    else:
+        return s[:110] + "..."
 
 
 def main():
     try:
         args = getArgs()
-        my_logger = setupLogging()
         if args.dry:
             my_logger.info("Running in dry mode.")
         db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         api = setupTweeting()
         currentlist = readdb(db)
         tweeted = []
-        for doi, link, title, date, status in currentlist:
+        for doi, link, title, __, status in currentlist:
             if status == 'tweeted':
                 tweeted.append(doi)
                 continue
             pct = queryAltmetric(doi)
             assert 0 <= pct <= 100
             if pct >= 90:
-                tit = shorten(title)
-                tweet("{}\n{}".format(tit, link), api, args.dry)
+                tweet("{}\n{}".format(shorten(title), link), api, args.dry)
                 tweeted.append(doi)
         cleandb(currentlist, tweeted, db)
         my_logger.info('Finished.\n')
@@ -145,4 +143,5 @@ def main():
 
 
 if __name__ == '__main__':
+    my_logger = setupLogging()
     main()
