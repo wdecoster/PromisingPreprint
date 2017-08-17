@@ -58,7 +58,7 @@ def cleandb(currentlist, alreadyTweeted, dbf):
     '''
     currentTime = datetime.now()
     with open(dbf, 'w') as db_updated:
-        for doi, link, title, date, __ in currentlist:
+        for doi, link, title, date, _ in currentlist:
             if (currentTime - datetime.strptime(date.strip(), "%Y-%m-%d")).days <= 7:
                 if doi in alreadyTweeted:
                     db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, "tweeted"))
@@ -126,7 +126,7 @@ def main():
         api = setupTweeting()
         currentlist = readdb(db)
         tweeted = []
-        for doi, link, title, __, status in currentlist:
+        for doi, link, title, _, status in currentlist:
             if status == 'tweeted':
                 tweeted.append(doi)
                 continue
