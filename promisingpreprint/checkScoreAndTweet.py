@@ -1,5 +1,5 @@
-## Periodically query altmetric all entries in database younger than 1 week
-## As soon as threshold (better than top 90% score journal) is passed, tweet about article
+# Periodically query altmetric all entries in database younger than 1 month
+# As soon as threshold (better than top 90% score journal) is passed, tweet about article
 # Part of PromisingPreprint
 # wdecoster
 
@@ -23,7 +23,7 @@ def queryAltmetric(doi):
     try:
         resp = a.doi(doi)
         if resp:
-            return resp["context"]['journal']['pct'] # Percentage attention for this journal
+            return resp["context"]['journal']['pct']  # Percentage attention for this journal
         else:
             return 0
     except AltmetricHTTPException as e:
@@ -52,18 +52,20 @@ def tweet(message, api, dry):
 
 def cleandb(currentlist, alreadyTweeted, dbf):
     '''
-    Using the stored list of entries check if the articles aren't older than 1 week
-    Save only those younger than 1 week to same file (overwrite)
+    Using the stored list of entries check if the articles aren't older than 1 month
+    Save only those younger than 1 month to same file (overwrite)
     Also remove those which were already tweeted
     '''
     currentTime = datetime.now()
     with open(dbf, 'w') as db_updated:
         for doi, link, title, date, _ in currentlist:
-            if (currentTime - datetime.strptime(date.strip(), "%Y-%m-%d")).days <= 7:
+            if (currentTime - datetime.strptime(date.strip(), "%Y-%m-%d")).days <= 31:
                 if doi in alreadyTweeted:
-                    db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, "tweeted"))
+                    db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(
+                        doi, link, title, date, "tweeted"))
                 else:
-                    db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(doi, link, title, date, "SeenNotTweeted"))
+                    db_updated.write("{}\t{}\t{}\t{}\t{}\n".format(
+                        doi, link, title, date, "SeenNotTweeted"))
 
 
 def readdb(dbf):
@@ -78,7 +80,8 @@ def readdb(dbf):
 
 
 def getArgs():
-    parser = argparse.ArgumentParser(description="Checking altmetric score of preprints in database and tweet if above cutoff.")
+    parser = argparse.ArgumentParser(
+        description="Checking altmetric score of preprints in database and tweet if above cutoff.")
     parser.add_argument("-d", "--dry", help="Print instead of tweeting", action="store_true")
     return parser.parse_args()
 
@@ -122,7 +125,7 @@ def main():
         args = getArgs()
         if args.dry:
             my_logger.info("Running in dry mode.")
-        db="/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
+        db = "/home/pi/projects/PromisingPreprint/preprintdatabase.txt"
         api = setupTweeting()
         currentlist = readdb(db)
         tweeted = []
