@@ -7,14 +7,7 @@ from os import path
 import logging
 import logging.handlers
 import pickle
-
-
-class Preprint(object):
-    def __init__(self, doi, url, title, date):
-        self.doi = doi
-        self.url = url
-        self.title = title
-        self.date = date
+from preprints import Preprint
 
 
 def checkRSS(preprints):
