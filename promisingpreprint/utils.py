@@ -14,7 +14,7 @@ def setup_logging(path):
     if os.path.isfile(path):
         logfile = path
     else:
-        logfile = "temporary_log.log"
+        logfile = "temporary.log"
     my_logger = logging.getLogger('MyLogger')
     my_logger.setLevel(logging.INFO)
     handler = logging.handlers.RotatingFileHandler(logfile, maxBytes=10000, backupCount=5)
