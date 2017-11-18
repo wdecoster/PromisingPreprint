@@ -3,7 +3,7 @@
 # wdecoster
 
 import feedparser
-from preprints import Preprint, load_database, save_database
+from preprint import Preprint, load_database, save_database
 from utils import setup_logging
 
 
