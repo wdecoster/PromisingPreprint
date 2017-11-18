@@ -3,11 +3,8 @@
 # wdecoster
 
 import feedparser
-from os import path
-import logging
-import logging.handlers
-import pickle
-from preprints import Preprint
+from preprints import Preprint, load_database, save_database
+from utils import setup_logging
 
 
 def checkRSS(preprints):
@@ -28,10 +25,9 @@ def checkRSS(preprints):
                     Preprint(doi=pub['dc_identifier'],
                              url=trimlink(pub["link"]),
                              title=pub["title"],
-                             date=pub['updated']))
-        pickle.dump(
-            obj=preprints,
-            file=open(DATABASE, 'wb'))
+                             date=pub['updated'],
+                             status="new"))
+        save_database(preprints)
 
 
 def trimlink(url):
@@ -39,36 +35,13 @@ def trimlink(url):
     return url.split('?')[0]
 
 
-def load_database():
-    """If database exists, return content."""
-    if path.isfile(DATABASE):
-        with open(DATABASE, 'rb') as db:
-            return pickle.load(db)
-    else:
-        my_logger.warning("Unexpected: Database not found")
-        return []
-
-
-def setup_logging():
-    '''
-    Setup a rotating log in which each file can maximally get 10kb
-    5 backups are kept in addition to the current file
-    '''
-    logname = "/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log"
-    my_logger = logging.getLogger('MyLogger')
-    my_logger.setLevel(logging.INFO)
-    handler = logging.handlers.RotatingFileHandler(logname, maxBytes=10000, backupCount=5)
-    handler.setFormatter(logging.Formatter("{asctime} {levelname:8s} {message}", style='{'))
-    my_logger.addHandler(handler)
-    my_logger.info('Started.')
-    return my_logger
-
-
 def main():
     try:
         db = load_database()
+        if not db:
+            my_logger.warning("Unexpected: Database not found")
         checkRSS(db)
-        # my_logger.info('Finished.\n')
+        my_logger.info('Finished.\n')
     except Exception as e:
         my_logger.error(e, exc_info=True)
         raise
@@ -76,5 +49,5 @@ def main():
 
 if __name__ == '__main__':
     DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
-    my_logger = setup_logging()
+    my_logger = setup_logging("/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log")
     main()
