@@ -7,3 +7,4 @@ cron.log
 checkScoreAndTweet.log.1
 getPreprintsAndSave.log.1
 preprintdatabase.pickle
+temporary.log
