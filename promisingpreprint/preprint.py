@@ -73,5 +73,4 @@ def save_database(preprints):
         file=open(DATABASE, 'wb'))
 
 
-#DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
-DATABASE = "preprintdatabase.pickle"
+DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
