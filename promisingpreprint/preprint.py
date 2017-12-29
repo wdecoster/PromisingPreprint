@@ -52,10 +52,10 @@ class Preprint(object):
 
 def shorten(s):
     """Shorten the title if necessary."""
-    if len(s) < 110:
+    if len(s) < 240:
         return s
     else:
-        return s[:110] + "..."
+        return s[:240] + "..."
 
 
 def load_database():
