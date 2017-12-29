@@ -4,7 +4,7 @@
 from os import path
 import pickle
 from time import sleep
-from altmetric import Altmetric
+from altmetric import Altmetric, AltmetricHTTPException
 
 
 class Preprint(object):
@@ -37,7 +37,7 @@ class Preprint(object):
                 return 0, pct
             else:
                 return 0, 0
-        except Altmetric.HTTPException as e:
+        except AltmetricHTTPException as e:
             if e.status_code == 403:
                 return 403, "You aren't authorized for this call"
             elif e.status_code == 420:
