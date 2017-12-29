@@ -7,7 +7,7 @@ from preprint import Preprint, load_database, save_database
 from utils import setup_logging
 
 
-def checkRSS(preprints):
+def check_RSS(preprints):
     '''
     Check the RSS feed of biorxiv and for each paper, save doi, link and title
     Except if the doi was already seen, then don't duplicate
@@ -23,14 +23,14 @@ def checkRSS(preprints):
                 my_logger.info("Adding article {} to database".format(pub['dc_identifier']))
                 preprints.append(
                     Preprint(doi=pub['dc_identifier'],
-                             url=trimlink(pub["link"]),
+                             url=trim_link(pub["link"]),
                              title=pub["title"],
                              date=pub['updated'],
                              status="new"))
         save_database(preprints)
 
 
-def trimlink(url):
+def trim_link(url):
     """Remove unnessecary parts from the url."""
     return url.split('?')[0]
 
@@ -40,7 +40,7 @@ def main():
         db = load_database()
         if not db:
             my_logger.warning("Unexpected: Database not found")
-        checkRSS(db)
+        check_RSS(db)
         my_logger.info('Finished.\n')
     except Exception as e:
         my_logger.error(e, exc_info=True)
