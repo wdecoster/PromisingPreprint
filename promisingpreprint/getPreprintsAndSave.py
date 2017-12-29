@@ -48,6 +48,5 @@ def main():
 
 
 if __name__ == '__main__':
-    DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
     my_logger = setup_logging("/home/pi/projects/PromisingPreprint/getPreprintsAndSave.log")
     main()
