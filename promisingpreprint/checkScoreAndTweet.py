@@ -10,23 +10,26 @@ import tweepy
 import argparse
 from utils import setup_logging
 from preprint import load_database, save_database
+from altmetric import Altmetric
+from time import sleep
 
 
 def main():
     try:
         args = get_args()
-        api = setup_tweeting()
+        twitter_api = setup_tweeting()
         preprints = load_database()
+        altmetric_api = Altmetric(apikey=secrets.altmetric_key)
         for preprint in preprints:
             if preprint.status == 'tweeted':
                 continue
-            return_code, res = preprint.query_altmetric()
+            return_code, res = preprint.query_altmetric(altmetric_api)
             if return_code:
                 my_logger.error(res)
             else:
                 if res >= 90:
                     if not args.dry:
-                        preprint.tweet(api)
+                        preprint.tweet(twitter_api)
                     else:
                         preprint.dry_print()
             sleep(0.6)
