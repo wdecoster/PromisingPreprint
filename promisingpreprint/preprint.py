@@ -3,8 +3,7 @@
 
 from os import path
 import pickle
-from time import sleep
-from altmetric import Altmetric, AltmetricHTTPException
+from altmetric import AltmetricHTTPException
 
 
 class Preprint(object):
@@ -20,17 +19,14 @@ class Preprint(object):
         message = "{}\n{}".format(shorten(self.title), self.url)
         self.status = "tweeted"
         api.update_status(message)
-        sleep(2)
 
     def dry_print(self):
         print("{}\n{}".format(shorten(self.title), self.url))
 
-    def query_altmetric(self):
+    def query_altmetric(self, api):
         """Check the altmetric journal percentile score of the publication."""
-        a = Altmetric()
-        sleep(2)
         try:
-            resp = a.doi(self.doi)
+            resp = api.doi(self.doi)
             if resp:
                 pct = resp["context"]['journal']['pct']
                 assert 0 <= pct <= 100
@@ -41,7 +37,6 @@ class Preprint(object):
             if e.status_code == 403:
                 return 403, "You aren't authorized for this call"
             elif e.status_code == 420:
-                sleep(60)
                 return 420, "You are being rate limited"
             elif e.status_code == 502:
                 return 502, "Down for maintenance."
@@ -74,3 +69,4 @@ def save_database(preprints):
 
 
 DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
+DATABASE = "/home/wouter/MEGA/PhD/BioInfor/Projects/PromisingPreprint/preprintdatabase.pickle"
