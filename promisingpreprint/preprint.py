@@ -69,4 +69,3 @@ def save_database(preprints):
 
 
 DATABASE = "/home/pi/projects/PromisingPreprint/preprintdatabase.pickle"
-DATABASE = "/home/wouter/MEGA/PhD/BioInfor/Projects/PromisingPreprint/preprintdatabase.pickle"
