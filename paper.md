@@ -1,5 +1,3 @@
-# Filtering academic literature by Altmetric score and a twitter bot
-
 ---
 title: 'Filtering academic literature by Altmetric score and a twitter bot'
 tags:
