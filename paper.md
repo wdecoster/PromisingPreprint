@@ -9,7 +9,7 @@ authors:
   orcid: 0000-0002-5248-8197
   affiliation: "1" # (Multiple affiliations must be quoted)
 affiliations:
-- name: Neurodegenerative Brain Diseases group, Center for Molecular Neurology, VIB & University of Antwerp, 2610 Antwerp, Belgium
+- name: Neurodegenerative Brain Diseases group, Center for Molecular Neurology, VIB & University of Antwerp, Belgium
   index: 1
 date: 26 March 2018
 bibliography: paper.bib
