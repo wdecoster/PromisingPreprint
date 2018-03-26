@@ -1,6 +1,12 @@
 # PromisingPreprint
 A python twitter bot tweeting about bioRxiv preprints reaching an interesting altmetric score.
 
+
+
+[![DOI](https://zenodo.org/badge/98691241.svg)](https://zenodo.org/badge/latestdoi/98691241)
+
+
+
 ## Introduction
 The script is designed to run as a cron job:
 - getPreprintsAndSave.py hourly
