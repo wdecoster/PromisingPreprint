@@ -1,0 +1,17 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": ["Wouter De Coster"
+
+  ],
+  "identifier": "https://doi.org/10.5281/zenodo.1207834",
+  "codeRepository": "https://github.com/wdecoster/PromisingPreprint",
+  "datePublished": "2018-03-26",
+  "dateModified": "2018-03-26",
+  "dateCreated": "2018-03-26",
+  "description": "A python twitter bot tweeting about bioRxiv preprints reaching an interesting altmetric score.",
+  "keywords": "literature, twitter, preprint",
+  "license": "MIT",
+  "title": "PromisingPreprint",
+  "version": "v1.0.0"
+}
