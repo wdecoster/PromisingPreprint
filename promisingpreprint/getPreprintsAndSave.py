@@ -15,10 +15,9 @@ def check_RSS(preprints):
     dois_seen = [p.doi for p in preprints]
     feed = feedparser.parse("http://connect.biorxiv.org/biorxiv_xml.php?subject=all")
     if 'bozo_exception' in feed.keys():
-        pass
-        my_logger.error("Failed to reach the feed")
-    else:
-        for pub in feed["items"]:
+        my_logger.error("'bozo_exception' in feed")
+    for pub in feed["items"]:
+        try:
             if not pub['dc_identifier'] in dois_seen:
                 my_logger.info("Adding article {} to database".format(pub['dc_identifier']))
                 preprints.append(
@@ -27,6 +26,8 @@ def check_RSS(preprints):
                              title=pub["title"],
                              date=pub['updated'],
                              status="new"))
+        except KeyError:
+            my_logger.error("Badly formed record in feed:\n{}".format(pub))
         save_database(preprints)
 
 
