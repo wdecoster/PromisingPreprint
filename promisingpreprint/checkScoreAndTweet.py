@@ -32,7 +32,7 @@ def main():
                         preprint.tweet(twitter_api)
                     else:
                         preprint.dry_print()
-            sleep(2)
+            sleep(3)
         clean_database(preprints)
         my_logger.info('Finished.\n')
     except Exception as e:
