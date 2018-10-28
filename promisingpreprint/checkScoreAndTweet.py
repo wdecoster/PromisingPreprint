@@ -37,6 +37,7 @@ def main():
         my_logger.info('Finished.\n')
     except Exception as e:
         my_logger.error(e, exc_info=True)
+        save_database(preprints)
         raise
 
 
