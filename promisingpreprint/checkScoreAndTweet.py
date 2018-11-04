@@ -12,6 +12,7 @@ from utils import setup_logging
 from preprint import load_database, save_database
 from altmetric import Altmetric
 from time import sleep
+from random import shuffle
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
         twitter_api = setup_tweeting()
         preprints = load_database()
         altmetric_api = Altmetric(apikey=secrets.altmetric_key)
-        for preprint in preprints:
+        for preprint in shuffle(preprints):
             if preprint.status == 'tweeted':
                 continue
             return_code, res = preprint.query_altmetric(altmetric_api)
