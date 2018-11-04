@@ -20,7 +20,7 @@ def main():
         args = get_args()
         twitter_api = setup_tweeting()
         preprints = load_database()
-        preprints = shuffle(preprints)
+        shuffle(preprints)
         altmetric_api = Altmetric(apikey=secrets.altmetric_key)
         for preprint in preprints:
             if preprint.status == 'tweeted':
