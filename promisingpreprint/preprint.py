@@ -42,7 +42,8 @@ class Preprint(object):
                 return 502, "Down for maintenance."
             elif e.status_code == 404:
                 return 404, "Invalid API function"
-                print(e.msg)
+            else:
+                return e.status_code, e.msg
 
 
 def shorten(s):
